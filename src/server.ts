@@ -11,5 +11,5 @@ const DB: string = process.env.DATABASE_URL!.replace(
 mongoose.connect(DB).then(() => console.log('Database connection successful!'));
 
 app.listen(port, () => {
-  console.log(`Listening on port:${port}...`);
+  console.log(`Listening on port ${port}...`);
 });
