@@ -1,5 +1,7 @@
+import { Schema } from "mongoose";
+
 export default interface IActivity {
-  creatorId: string;
+  creatorId: Schema.Types.ObjectId;
   name: string;
   description: string;
   goalAmount: number;
