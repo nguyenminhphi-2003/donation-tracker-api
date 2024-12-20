@@ -2,7 +2,11 @@ import { Schema, model } from 'mongoose';
 import IUser from '../interfaces/user.interface';
 
 const userSchema = new Schema<IUser>({
-  username: {
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
@@ -19,6 +23,7 @@ const userSchema = new Schema<IUser>({
     type: String,
     enum: ['user', 'admin'],
     default: 'user',
+    required: true,
   },
 })
 
