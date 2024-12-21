@@ -23,4 +23,4 @@ router
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
 
-export const UserRoutes: Router = router;
+export default router;
