@@ -2,7 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import 'dotenv/config';
-import { MainRouter } from './routes';
+import MainRouter from './routes';
 import AppError from './utilities/appError';
 import errorController from './controllers/error.controller';
 
