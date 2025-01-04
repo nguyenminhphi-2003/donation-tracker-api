@@ -4,20 +4,20 @@ import IUser from '../interfaces/user.interface';
 const userSchema = new Schema<IUser>({
   firstName: {
     type: String,
-    required: true,
+    required: [true, 'First name is required'],
   },
   lastName: {
     type: String,
-    required: true,
+    required: [true, 'Last name is required'],
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Email is required'],
     unique: true,
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Password is required'],
     select: false,
   },
   role: {
