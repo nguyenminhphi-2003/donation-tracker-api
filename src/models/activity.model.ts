@@ -5,33 +5,32 @@ const activitySchema = new Schema<IActivity>({
   creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: [true, 'Creator is required'],
   },
   name: {
     type: String,
-    required: true,
+    required: [true, 'Name is required'],
   },
   description: {
     type: String,
-    required: true,
+    required: [true, 'Description is required'],
   },
   goalAmount: {
     type: Number,
-    required: true,
+    required: [true, 'Goal amount is required'],
   },
   totalDonations: {
     type: Number,
-    required: true,
     default: 0,
   },
   status: {
     type: String,
     enum: ['open', 'closed'],
-    required: true,
+    required: [true, 'Status is required'],
   },
   end_at: {
     type: Date,
-    required: true,
+    required: [true, 'End date is required'],
   },
 });
 
@@ -40,6 +39,11 @@ activitySchema.pre(/^find/, function (next) {
     path: 'creator',
     select: 'firstName lastName',
   });
+  next();
+});
+
+activitySchema.pre('save', function (next) {
+  this.totalDonations = 0;
   next();
 });
 
