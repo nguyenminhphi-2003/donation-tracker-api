@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 
 export default interface IDonation {
-  userId: Schema.Types.ObjectId;
-  activityId: Schema.Types.ObjectId;
+  user: Schema.Types.ObjectId;
+  activity: Schema.Types.ObjectId;
   amount: number;
 }
