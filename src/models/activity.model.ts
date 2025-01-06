@@ -42,10 +42,5 @@ activitySchema.pre(/^find/, function (next) {
   next();
 });
 
-activitySchema.pre('save', function (next) {
-  this.totalDonations = 0;
-  next();
-});
-
 const Activity = model<IActivity>('Activity', activitySchema);
 export default Activity;
