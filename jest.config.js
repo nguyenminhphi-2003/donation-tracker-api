@@ -4,6 +4,6 @@ export default {
   testTimeout: 15000,
   collectCoverage: false,
   transform: {
-    '^.+.tsx?$': ['ts-jest', {}],
+    '^.+.tsx?$': ['ts-jest', { isolatedModules: true }],
   },
 };
