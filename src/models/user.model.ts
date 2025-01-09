@@ -26,7 +26,12 @@ const userSchema = new Schema<IUser>({
     default: 'user',
     required: true,
   },
-})
+});
+
+userSchema.pre<IUser>(/^find/, function (next) {
+  (this as any).select('-password');
+  next();
+});
 
 const User = model<IUser>('User', userSchema);
 export default User;
