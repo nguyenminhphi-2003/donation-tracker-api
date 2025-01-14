@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import User from '../src/models/user.model';
 import Activity from '../src/models/activity.model';
+import Donation from '../src/models/donation.model';
 import 'dotenv/config';
 import exp from 'constants';
 
@@ -261,5 +262,78 @@ describe('Activity API', () => {
     });
 
     await request(app).delete(`/api/activities/${activity.id}`).expect(204);
+  });
+});
+
+describe('Donation API', () => {
+  test('GET /api/donations', async () => {
+    const user = await User.create(userSampleData);
+    const activity = await Activity.create({
+      creator: user.id,
+      ...activitySampleData,
+    });
+
+    const donation = await Donation.create({
+      user: user.id,
+      activity: activity.id,
+      amount: 100,
+    });
+
+    await request(app)
+      .get('/api/donations')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.status).toBe('success');
+        expect(response.body.results).toEqual(1);
+        expect(response.body.data.donations[0].user._id).toBe(user.id);
+      });
+  });
+
+  test('GET /api/donations/:id', async () => {
+    const user = await User.create(userSampleData);
+    const activity = await Activity.create({
+      creator: user.id,
+      ...activitySampleData,
+    });
+
+    const donation = await Donation.create({
+      user: user.id,
+      activity: activity.id,
+      amount: 100,
+    });
+
+    await request(app)
+      .get(`/api/donations/${donation.id}`)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.status).toBe('success');
+        expect(response.body.data.donation.user._id).toBe(user.id);
+        expect(response.body.data.donation.activity._id).toBe(activity.id);
+        expect(response.body.data.donation.amount).toBe(100);
+      });
+  });
+
+  test('POST /api/donations', async () => {
+    const user = await User.create(userSampleData);
+    const activity = await Activity.create({
+      creator: user.id,
+      ...activitySampleData,
+    });
+    const donation = {
+      user: user._id,
+      activity: activity._id,
+      amount: 100,
+    };
+
+    await request(app)
+      .post('/api/donations')
+      .send(donation)
+      .expect(201)
+      .then(async (response) => {
+        // Check the response
+        expect(response.body.status).toBe('success');
+        const createdDonation = response.body.data.donation[0];
+        expect(createdDonation.user).toBe(user.id);
+      });
   });
 });
