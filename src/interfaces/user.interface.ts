@@ -4,4 +4,8 @@ export default interface IUser {
   email: string;
   password: string;
   role: string;
+  comparePassword(
+    candidatePassword: string,
+    userPassword: string,
+  ): Promise<boolean>;
 }
