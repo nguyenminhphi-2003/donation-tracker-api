@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import IUser from '../interfaces/user.interface';
+import bcrypt from 'bcrypt';
 
 const userSchema = new Schema<IUser>({
   firstName: {
@@ -28,10 +29,24 @@ const userSchema = new Schema<IUser>({
   },
 });
 
-userSchema.pre<IUser>(/^find/, function (next) {
-  (this as any).select('-password');
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+
+  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
+
+userSchema.methods.comparePassword = async function (
+  candidatePassword: string,
+  userPassword: string,
+): Promise<boolean> {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+// userSchema.pre<IUser>(/^find/, function (next) {
+//   (this as any).select('-password');
+//   next();
+// });
 
 const User = model<IUser>('User', userSchema);
 export default User;
