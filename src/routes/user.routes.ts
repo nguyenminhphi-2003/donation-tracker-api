@@ -1,16 +1,11 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import * as userController from '../controllers/user.controller';
-
-const filterRole = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body.role) {
-    delete req.body.role;
-  }
-  next();
-};
+import * as authController from '../controllers/auth.controller';
 
 const router: Router = Router();
 
-router.use(filterRole);
+router.post('/signup', authController.signup);
+router.post('/login', authController.login);
 
 router
   .route('/')
