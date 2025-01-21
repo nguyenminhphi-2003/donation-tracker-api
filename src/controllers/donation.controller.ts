@@ -4,13 +4,12 @@ import Activity from '../models/activity.model';
 import User from '../models/user.model';
 import catchAsync from '../utilities/catchAsync';
 import AppError from '../utilities/appError';
-import mongoose from 'mongoose';
-import { request } from 'http';
+import mongoose, { ObjectId } from 'mongoose';
 
 // Check if the activity and user exist
 const checkRequest = async (
-  activityId: string,
-  userId: string,
+  activityId: ObjectId,
+  userId: ObjectId,
   next: NextFunction,
 ): Promise<any> => {
   const activity = await Activity.findById(activityId);
