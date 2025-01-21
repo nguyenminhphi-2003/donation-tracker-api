@@ -43,7 +43,6 @@ export const login: any = catchAsync(
     }
 
     const user = await User.findOne({ email }).select('+password');
-    console.log(user);
     if (!user || !(await user.comparePassword(password, user.password))) {
       return next(new AppError('Incorrect email or password', 401));
     }
@@ -60,7 +59,6 @@ export const protect: any = catchAsync( async (req: Request, res: Response, next
   ) {
     token = req.headers.authorization.split(' ')[1];
   }
-  console.log(token);
 
   if (!token) {
     return next(new AppError('You are not logged in! Please log in to get access.', 401));
