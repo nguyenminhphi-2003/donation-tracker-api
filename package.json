@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "main": "dist/server.js",
   "scripts": {
-    "watch": "set NODE_ENV=development && tsx watch ./src/server.ts",
+    "start": "npm run build&&npm run serve",
+    "watch": "set NODE_ENV=development&&tsx watch ./src/server.ts",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "build": "tsc",
+    "serve": "node dist/server.js"
   },
   "author": "",
   "license": "ISC",
