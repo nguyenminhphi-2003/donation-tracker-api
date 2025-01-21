@@ -1,7 +1,21 @@
 import { Request, Response, NextFunction } from 'express';
+import User from '../models/user.model';
 import Activity from '../models/activity.model';
 import catchAsync from '../utilities/catchAsync';
 import AppError from '../utilities/appError';
+import { ObjectId } from 'mongoose';
+
+const checkUserExists = async (
+  user_id: ObjectId,
+  next: NextFunction,
+): Promise<boolean> => {
+  const user = await User.findById(user_id);
+  if (!user) {
+    return false;
+  }
+
+  return true;
+};
 
 export const getAllActivities: any = catchAsync(
   async (req: Request, res: Response) => {
@@ -34,7 +48,12 @@ export const getActivityById: any = catchAsync(
 );
 
 export const createActivity: any = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userCheck = await checkUserExists(req.body.creator, next);
+    if (!userCheck) {
+      return next(new AppError('User not found', 404));
+    }
+
     const activity = await Activity.create(req.body);
 
     res.status(201).json({
@@ -48,6 +67,11 @@ export const createActivity: any = catchAsync(
 
 export const updateActivity: any = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const userCheck = await checkUserExists(req.body.creator, next);
+    if (!userCheck) {
+      return next(new AppError('User not found', 404));
+    }
+    
     const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
