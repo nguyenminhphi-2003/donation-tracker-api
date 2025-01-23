@@ -5,6 +5,7 @@ import User from '../models/user.model';
 import catchAsync from '../utilities/catchAsync';
 import AppError from '../utilities/appError';
 import mongoose, { ObjectId } from 'mongoose';
+import { createPaymentUrl } from '../services/payment.service';
 
 // Check if the activity and user exist
 const checkRequest = async (
@@ -25,6 +26,16 @@ const checkRequest = async (
   return { activity, user };
 };
 
+export const createPaymentURL: any = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const ipAddr = req.headers['x-forwarded-for'];
+
+  const paymentUrl = createPaymentUrl(req.body.amount, '', ipAddr as string);
+};
+
 export const getAllDonations: any = catchAsync(
   async (req: Request, res: Response) => {
     const donations = await Donation.find();
@@ -42,7 +53,11 @@ export const getAllDonations: any = catchAsync(
 export const createDonation: any = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { activity, user, amount } = req.body;
-    const { activity: checkedActivity } = await checkRequest(activity, user, next);
+    const { activity: checkedActivity } = await checkRequest(
+      activity,
+      user,
+      next,
+    );
 
     const session = await mongoose.startSession();
     session.startTransaction();
