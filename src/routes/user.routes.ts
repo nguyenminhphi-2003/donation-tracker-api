@@ -1,18 +1,19 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router } from 'express';
 import * as userController from '../controllers/user.controller';
-import * as authController from '../controllers/auth.controller';
+import { signup, login, protect } from '../controllers/auth.controller';
 
 const router: Router = Router();
 
-router.post('/signup', authController.signup);
-router.post('/login', authController.login);
+router.post('/signup', signup);
+router.post('/login', login);
 
-router.use(authController.protect);
 
 router
-  .route('/')
-  .get(userController.getAllUsers)
-  .post(userController.createUser);
+.route('/')
+.get(protect, userController.getAllUsers)
+.post(userController.createUser);
+
+router.use(protect);
 
 router
   .route('/:id')
