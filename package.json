@@ -4,7 +4,8 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "npm run build&&npm run serve",
-    "watch": "export NODE_ENV=production&&tsx watch ./src/server.ts",
+    "watch": "tsx watch ./src/server.ts",
+    "watch:prod": "export NODE_ENV=production&&tsx watch ./src/server.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "tsc",
