@@ -1,6 +1,5 @@
 import app from './app';
 import mongoose from 'mongoose';
-import 'dotenv/config';
 
 const port = process.env.PORT || 3000;
 const dbUrl = process.env.DATABASE_URL;

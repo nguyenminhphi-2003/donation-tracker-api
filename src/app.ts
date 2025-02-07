@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import MainRouter from './routes';
 import AppError from './utilities/appError';
 import errorController from './controllers/error.controller';
+import 'dotenv/config';
 
 const app: Application = express();
 
@@ -15,8 +16,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+  res.send('Hello World!');
+});
 
 app.use('/api', MainRouter);
 
