@@ -14,6 +14,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
 app.use('/api', MainRouter);
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
