@@ -6,6 +6,7 @@ const activitySchema = new Schema<IActivity>({
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'Creator is required'],
+    immutable: true,
   },
   name: {
     type: String,
