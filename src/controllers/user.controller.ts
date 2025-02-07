@@ -34,15 +34,24 @@ export const getUserById: any = catchAsync(
   },
 );
 
+// export const createUser: any = catchAsync(
+//   async (req: Request, res: Response) => {
+//     const user = await User.create(req.body);
+
+//     res.status(201).json({
+//       status: 'success',
+//       data: {
+//         user,
+//       },
+//     });
+//   },
+//);
+
 export const createUser: any = catchAsync(
   async (req: Request, res: Response) => {
-    const user = await User.create(req.body);
-
-    res.status(201).json({
-      status: 'success',
-      data: {
-        user,
-      },
+    return res.status(404).json({
+      status: 'error',
+      message: 'Please use /signup route instead',
     });
   },
 );
