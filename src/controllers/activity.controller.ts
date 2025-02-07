@@ -5,15 +5,11 @@ import catchAsync from '../utilities/catchAsync';
 import AppError from '../utilities/appError';
 import { ObjectId } from 'mongoose';
 
-const checkUserExists = async (
-  user_id: ObjectId,
-  next: NextFunction,
-): Promise<boolean> => {
+const checkUserExists = async (user_id: ObjectId): Promise<boolean> => {
   const user = await User.findById(user_id);
   if (!user) {
     return false;
   }
-
   return true;
 };
 
@@ -49,12 +45,15 @@ export const getActivityById: any = catchAsync(
 
 export const createActivity: any = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const userCheck = await checkUserExists(req.body.creator, next);
+    const userCheck = await checkUserExists(req.user);
     if (!userCheck) {
       return next(new AppError('User not found', 404));
     }
 
-    const activity = await Activity.create(req.body);
+    const activity = await Activity.create({
+      ...req.body,
+      creator: req.user,
+    });
 
     res.status(201).json({
       status: 'success',
@@ -67,11 +66,6 @@ export const createActivity: any = catchAsync(
 
 export const updateActivity: any = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const userCheck = await checkUserExists(req.body.creator, next);
-    if (!userCheck) {
-      return next(new AppError('User not found', 404));
-    }
-    
     const activity = await Activity.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
