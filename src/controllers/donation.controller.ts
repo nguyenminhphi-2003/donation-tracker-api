@@ -59,6 +59,10 @@ export const createDonation: any = catchAsync(
       next,
     );
 
+    if (activity.goalAmount === activity.totalDonations) {
+      return next(new AppError('Activity has reached its goal', 400));
+    }
+
     const session = await mongoose.startSession();
     session.startTransaction();
 
