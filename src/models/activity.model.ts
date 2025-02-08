@@ -12,6 +12,10 @@ const activitySchema = new Schema<IActivity>({
     type: String,
     required: [true, 'Name is required'],
   },
+  image: {
+    type: String,
+    required: [true, 'Image is required'],
+  },
   description: {
     type: String,
     required: [true, 'Description is required'],
