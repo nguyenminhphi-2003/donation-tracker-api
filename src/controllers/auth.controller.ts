@@ -16,6 +16,8 @@ const signToken = (id: string): string => {
 
 const createSendToken = (user: any, statusCode: number, res: Response) => {
   const token = signToken(user._id);
+  res.cookie('jwt', token);
+
   user.password = undefined;
 
   res.status(statusCode).json({
@@ -50,6 +52,11 @@ export const login: any = catchAsync(
     createSendToken(user, 200, res);
   },
 );
+
+export const logout: any = (req: Request, res: Response) => {
+  res.cookie('jwt', 'loggedout');
+  res.status(200).json({ status: 'success' });
+};
 
 export const protect: any = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
