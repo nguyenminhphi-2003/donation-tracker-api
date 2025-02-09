@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import * as userController from '../controllers/user.controller';
-import { signup, login, protect } from '../controllers/auth.controller';
+import { signup, login, logout, protect } from '../controllers/auth.controller';
 
 const router: Router = Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
-
+router.get('/logout', logout);
 
 router
 .route('/')
