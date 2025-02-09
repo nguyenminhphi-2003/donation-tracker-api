@@ -5,11 +5,13 @@ import MainRouter from './routes';
 import AppError from './utilities/appError';
 import errorController from './controllers/error.controller';
 import 'dotenv/config';
+import cookieParser from 'cookie-parser';
 
 const app: Application = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
