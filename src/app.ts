@@ -6,12 +6,14 @@ import AppError from './utilities/appError';
 import errorController from './controllers/error.controller';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 const app: Application = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors);
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
