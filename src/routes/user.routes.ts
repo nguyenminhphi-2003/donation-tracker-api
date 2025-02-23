@@ -1,6 +1,12 @@
 import { Router } from 'express';
 import * as userController from '../controllers/user.controller';
-import { signup, login, logout, protect } from '../controllers/auth.controller';
+import {
+  signup,
+  login,
+  logout,
+  protect,
+  restrictTo,
+} from '../controllers/auth.controller';
 
 const router: Router = Router();
 
@@ -9,11 +15,11 @@ router.post('/login', login);
 router.get('/logout', logout);
 
 router
-.route('/')
-.get(protect, userController.getAllUsers)
-.post(userController.createUser);
+  .route('/')
+  .get(protect, restrictTo('admin'), userController.getAllUsers)
+  .post(userController.createUser);
 
-router.use(protect);
+router.use(protect, restrictTo('admin'));
 
 router
   .route('/:id')
