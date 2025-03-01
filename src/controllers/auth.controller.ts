@@ -66,6 +66,8 @@ export const protect: any = catchAsync(
       req.headers.authorization.startsWith('Bearer')
     ) {
       token = req.headers.authorization.split(' ')[1];
+    } else if (req.cookies.jwt && req.cookies.jwt !== 'loggedout') {
+      token = req.cookies.jwt;
     }
 
     if (!token) {
@@ -90,6 +92,7 @@ export const protect: any = catchAsync(
     }
 
     req.user = currentUser;
+    res.locals.user = currentUser;
     next();
   },
 );
