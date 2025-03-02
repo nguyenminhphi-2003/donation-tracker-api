@@ -16,8 +16,13 @@ const signToken = (id: string): string => {
 
 const createSendToken = (user: any, statusCode: number, res: Response) => {
   const token = signToken(user._id);
-  res.cookie('jwt', token);
 
+  res.cookie('jwt', token, {
+    path: '/',
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+  });
   user.password = undefined;
 
   res.status(statusCode).json({
