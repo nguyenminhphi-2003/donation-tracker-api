@@ -59,7 +59,12 @@ export const login: any = catchAsync(
 );
 
 export const logout: any = (req: Request, res: Response) => {
-  res.cookie('jwt', 'loggedout');
+  res.cookie('jwt', 'loggedout', {
+    path: '/',
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true,
+  });
   res.status(200).json({ status: 'success' });
 };
 
